@@ -20,18 +20,20 @@ export default function testComponent({ ein }) {
       </Typography>
       <Input 
         id="numberMax"
-        placeholder="For example, type \"5\" to generate a number from 1-5"
-        required=true
+        placeholder={"For example, type \"5\" to generate a number from 1-5"}
+        required={true}
         onChange={e => setUpperBound(e.target.value)}
       />
       <Button
-        onClick={setResult(calcRandom(upperBound))}
+        onClick={() => setResult(calcRandom(upperBound))}
       >
+        "Generate!"
+      </Button>
       <Typography id="result" component="h3">
-        {result != ''? "Your random number is: " + result : '') }
+        {result !== ''? "Your random number is: " + result : ''}
       </Typography>
-      /*<a href="serebii.io">{"Your EIN, uguu: " + ein}</a>
-      <span>{"And your glorious MemeID number: " + meme}</span>*/
+      {/*<a href="serebii.io">{"Your EIN, uguu: " + ein}</a>
+      <span>{"And your glorious MemeID number: " + meme}</span>*/}
       
       
       
