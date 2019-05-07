@@ -1,52 +1,49 @@
 
 import React, { useState } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
+import ItemList from './ItemList';
 
-export default function testComponent({ ein }) {
+export default function CouponMarketplace({ ein }) {
 
-  let [ meme, setMeme ] = useState(calculateNewMeme(ein));
-  let [ upperBound, setUpperBound ] = useState(1);  
-  let [ result, setResult ] = useState('');
+  var itemListings = [
+    {
+      uuid: 7329140802,
+      quantity: 1,
+      itemType: enums.ItemType.DIGITAL,
+      status: enums.ItemStatus.INACTIVE,
+      condition: enums.ItemCondition.GOOD,
+      title: "Test Item",
+      description: "An item you should probably buy",
+      price: 80,
+      delivery: [1,2],
+      tags: [],
+      returnPolicy: 0
+    },
+    {
+      uuid: 7329140802,
+      quantity: 10,
+      itemType: enums.ItemType.DIGITAL,
+      status: enums.ItemStatus.ACTIVE,
+      condition: enums.ItemCondition.NEW,
+      title: "Test IMPROVED Item",
+      description: "An item you should ***DEFINITELY*** buy",
+      price: 100,
+      delivery: [],
+      tags: [],
+      returnPolicy: 1
+    }
+  ];
 
-  //Generate a new Meme ID number on each reload
-  //setMeme(calculateNewMeme(ein));
+  const [ currentItems, setCurrentItems ] = useState(itemListings);
 
-  
+
 
   return (
-    <div>
-      <Typography component="h1">
-        "Random Number Generator"
-      </Typography>
-      <Input 
-        id="numberMax"
-        placeholder={"For example, type \"5\" to generate a number from 1-5"}
-        required={true}
-        onChange={e => setUpperBound(e.target.value)}
-      />
-      <Button
-        onClick={
-          /*Placed inside a function, otherwise we get this error below:
-          Too many re-renders. React limits the number of renders to prevent an infinite loop.*/
-          () => setResult(calcRandom(upperBound))
-        }
-      >
-        "Generate!"
-      </Button>
-      <Typography id="result" component="h3">
-        {result !== ''? "Your random number is: " + result : ''}
-      </Typography>
-      {/*<a href="serebii.io">{"Your EIN, uguu: " + ein}</a>
-      <span>{"And your glorious MemeID number: " + meme}</span>*/}
-      
-      
-      
-    </div>
+    <ItemList
+      items=currentItems
+    />
   );
   
-  
-  
- 
   
   
 }
