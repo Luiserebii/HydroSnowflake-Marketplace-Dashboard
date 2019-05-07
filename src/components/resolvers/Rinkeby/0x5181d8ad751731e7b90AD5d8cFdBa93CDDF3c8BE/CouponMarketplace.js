@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
 import ItemList from './ItemList';
-import enums from './enums';
+import allEnums from './enums';
+const enums = allEnums.CouponMarketPlaceResolverInterface;
 
 export default function CouponMarketplace({ ein }) {
 
