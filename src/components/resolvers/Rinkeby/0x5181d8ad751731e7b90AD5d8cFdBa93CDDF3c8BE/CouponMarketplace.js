@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
 import ItemList from './ItemList';
+import enums from './enums';
 
 export default function CouponMarketplace({ ein }) {
 
@@ -40,7 +41,7 @@ export default function CouponMarketplace({ ein }) {
 
   return (
     <ItemList
-      items=currentItems
+      items={currentItems}
     />
   );
   
