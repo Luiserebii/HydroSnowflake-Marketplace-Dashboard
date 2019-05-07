@@ -25,7 +25,11 @@ export default function testComponent({ ein }) {
         onChange={e => setUpperBound(e.target.value)}
       />
       <Button
-        onClick={() => setResult(calcRandom(upperBound))}
+        onClick={
+          /*Placed inside a function, otherwise we get this error below:
+          Too many re-renders. React limits the number of renders to prevent an infinite loop.*/
+          () => setResult(calcRandom(upperBound))
+        }
       >
         "Generate!"
       </Button>
