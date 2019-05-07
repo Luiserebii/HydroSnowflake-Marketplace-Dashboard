@@ -6,6 +6,8 @@ import allEnums from './enums';
 const enums = allEnums.CouponMarketPlaceResolverInterface.e;
 const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
+const address = '0x5181d8ad751731e7b90ad5d8cfdba93cddf3c8be';
+
 export default function CouponMarketplace({ ein }) {
 
   var itemListings = [
@@ -38,16 +40,19 @@ export default function CouponMarketplace({ ein }) {
   ];
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
-
-
+  const [ selectedItem, setSelectedItem ] = useState({});
 
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
       <h2>Vendor: {ein}</h2>
       <ItemList
-        items={currentItems}
+        items={currentItems},
+        setSelectedItem={setSelectedItem}
       />
+      <Typography component="h3">
+        {"Selected item for purchase: " + "UUID: " + selectedItem.uuid + " | " + selectedItem.title + " | " + selectedItem.price}
+      </Typography>
     </div>
   );
   
@@ -56,11 +61,21 @@ export default function CouponMarketplace({ ein }) {
 }
 
 
+async function getAllItemListings(){
+/*
+  let itemListings = [];
+  nextID = await instances.ItemFeature.nextItemListingsID.call();
+  for(int i = 0; i < nextID; i++) {
+    itemListings.push(await instances.ItemFeature.itemListings.call(i));
+  }
+  return itemListings;
+*/
+}
+
 function calculateNewMeme(num) {
   return num * 2 * calcRandom(10);
 }
 
 function calcRandom(x) {
   return Math.floor(Math.random() * x);
-}
- 
+} 

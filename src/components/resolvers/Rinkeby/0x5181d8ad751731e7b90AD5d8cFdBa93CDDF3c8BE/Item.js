@@ -19,10 +19,12 @@ export default function Item(props) {
         'height': '100%',
         'border-radius': '15px',
         'margin-bottom': '25px',
-        'padding': '10px'
+        'padding': '10px',
+        'cursor': 'pointer'
       }}
       onMouseOver={() => setColor(hoverColor)}
       onMouseLeave={() => setColor(defaultColor)}
+      onClick={() => props.setSelectedItem(uuid: props.uuid, title: props.title, price: props.price)}
     >
       <Typography component="h1">
         {props.title}

@@ -6,13 +6,13 @@ export default function ItemList(props) {
 
   return (
     <div>
-      { generateItems(props.items) }
+      { generateItems(props.items, { 'setSelectedItem': props.setSelectedItem }) }
     </div>
   );
 
 }
 
-function generateItems(items) {
+function generateItems(items, methods) {
   let itemsRes = items.map(item => {
 
     return (
@@ -28,6 +28,7 @@ function generateItems(items) {
         delivery = {item.delivery}
         tags = {item.tags}
         returnPolicy = {item.returnPolicy}
+        setSelectedItem = {methods.setSelectedItem}
       />
 
     );
