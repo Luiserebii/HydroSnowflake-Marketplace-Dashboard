@@ -45,9 +45,8 @@ export default function CouponMarketplace({ ein }) {
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
   couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
-  const [ output, setOutput ] = useState()
-  const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
-  const [ itemListings, setItemListings ] = useState(itemFeatureAddress ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
+  const itemFeatureContract = itemFeatureAddress || itemFeatureAddress !== '' ? useGenericContract(itemFeatureAddress, config.ItemFeature.ABI) : null;
+  const [ itemListings, setItemListings ] = useState(itemFeatureAddress || itemFeatureAddress !== '' ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
   const [ selectedItem, setSelectedItem ] = useState({});
@@ -81,11 +80,11 @@ function getAllItemListings(ItemFeature){
     let promiseArr = []
     for(let i = 0; i < nextID; i++) {
         promiseArr.push(ItemFeature.methods['itemListings']().call(i));
-    });
+    }
     Promise.all(promiseArr).then(res => {
       itemListings = res;
       return itemListings;
-    })  
+    });  
 
   });
 
