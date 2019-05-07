@@ -5,30 +5,38 @@ import { Typography, Input, Button } from '@material-ui/core';
 export default function ItemList({ ein }) {
 
   return (
-    {generateItems(this.props.items)}
+    { generateItems(this.props.items) }
   );
 
 );
 
 }
 
-function generateItems(itemsRaw) {
-  let itemsOut = itemsRaw.map((
-    <Item
-      title={itemsRaw.title}
-      description={itemsRaw.}  
-      price=
-      delivery=
-      returnPolicy=
-      uuid=
-      quantity=
-      itemType=
-      itemStatus=
-      itemCondition=
-    />
-  ));
+function generateItems(items) {
+  let itemsRes = items.map(item => {
+
+    return (
+      <Item
+        uuid = item.uuid
+        quantity = item.quantity
+        itemType = item.itemType
+        status = item.status
+        condition = item.condition
+        title = item.title
+        description = item.description
+        price = item.price
+        delivery = item.delivery
+        tags = item.tags
+        returnPolicy = item.returnPolicy
+      />
+
+    );
+  });
+
+
+  );
   
 
-  return itemsOut;
+  return itemsRes;
 }
 
