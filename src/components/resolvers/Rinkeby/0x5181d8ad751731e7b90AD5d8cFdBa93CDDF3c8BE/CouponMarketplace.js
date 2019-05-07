@@ -46,7 +46,7 @@ export default function CouponMarketplace({ ein }) {
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
   couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
   const [ output, setOutput ] = useState()
-  //const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
+  const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
   const [ itemListings, setItemListings ] = useState(itemFeatureAddress ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
@@ -78,13 +78,15 @@ function getAllItemListings(ItemFeature){
 
   let itemListings = [];
   ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+    let promiseArr = []
     for(let i = 0; i < nextID; i++) {
-      ItemFeature.methods['itemListings']().call(i).then(result => {
-        //This logic should crash right...? Every time an itemListing is added, the page will reload and... it'll go in a loop, or......?
-        itemListings.push(result);
-      });
-    return itemListings;
-    }
+        promiseArr.push(ItemFeature.methods['itemListings']().call(i));
+    });
+    Promise.all(promiseArr).then(res => {
+      itemListings = res;
+      return itemListings;
+    })  
+
   });
 
 }
