@@ -45,8 +45,11 @@ export default function CouponMarketplace({ ein }) {
    console.log(config.ItemFeature.abi)
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
-  couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
-  //const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : undefined;
+  //Adding conditional to prevent loop
+  if(itemFeatureAddress === '' || !itemFeatureAddress) { 
+    couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
+  } 
+ //const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : undefined;
 //  const [ itemListings, setItemListings ] = useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
