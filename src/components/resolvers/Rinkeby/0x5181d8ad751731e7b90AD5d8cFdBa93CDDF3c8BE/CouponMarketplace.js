@@ -41,9 +41,13 @@ export default function CouponMarketplace({ ein }) {
 
 
   return (
-    <ItemList
-      items={currentItems}
-    />
+    <div>
+      <h1>Snowflake Coupon Marketplace</h1>
+      <h2>Vendor: {ein}</h2>
+      <ItemList
+        items={currentItems}
+      />
+    </div>
   );
   
   
