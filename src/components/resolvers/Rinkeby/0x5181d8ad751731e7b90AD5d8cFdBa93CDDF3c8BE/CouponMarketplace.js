@@ -4,6 +4,7 @@ import { Typography, Input, Button } from '@material-ui/core';
 import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
 import allEnums from './enums';
+import { ABI } from './index';
 import config from './config';
 
 const enums = allEnums.CouponMarketPlaceResolverInterface.e;
@@ -44,10 +45,17 @@ export default function CouponMarketplace({ ein }) {
   const [ currentItems, setCurrentItems ] = useState(itemListings);
   const [ selectedItem, setSelectedItem ] = useState({});
 
+  const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI) 
+  const [ output, setOutput ] = useState(await couponMarketplaceContract.methods.ItemFeatureAddress.call());
+
+  const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
+
+
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
       <h2>Vendor: {ein}</h2>
+      <h3>Item Feature Address: {output}</h3>
       <ItemList
         items={currentItems}
         setSelectedItem={setSelectedItem}
