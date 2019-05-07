@@ -47,7 +47,7 @@ export default function CouponMarketplace({ ein }) {
 
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
-  couponMarketplaceContract.methods['ItemFeatureAddress'].call().call().then(value => setItemFeatureAddress(value));
+  couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
   const [ output, setOutput ] = useState()
   //const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
 
@@ -62,7 +62,7 @@ export default function CouponMarketplace({ ein }) {
         setSelectedItem={setSelectedItem}
       />
       <Typography component="h3">
-        {"Selected item for purchase: " + "UUID: " + selectedItem.uuid + " | " + selectedItem.title + " | " + selectedItem.price}
+        { selectedItem.uuid ? "Selected item for purchase: " + "UUID: " + selectedItem.uuid + " | " + selectedItem.title + " | " + selectedItem.price : ''}
       </Typography>
     </div>
   );
