@@ -45,17 +45,18 @@ export default function CouponMarketplace({ ein }) {
   const [ currentItems, setCurrentItems ] = useState(itemListings);
   const [ selectedItem, setSelectedItem ] = useState({});
 
-  const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI) 
-  const [ output, setOutput ] = useState(await couponMarketplaceContract.methods.ItemFeatureAddress.call());
-
-  const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
+  const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
+  const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
+  couponMarketplaceContract.methods['ItemFeatureAddress'].call().call().then(value => setItemFeatureAddress(value));
+  const [ output, setOutput ] = useState()
+  //const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
 
 
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
       <h2>Vendor: {ein}</h2>
-      <h3>Item Feature Address: {output}</h3>
+      <h3>ItemFeature Address: {itemFeatureAddress ? itemFeatureAddress : null}</h3>
       <ItemList
         items={currentItems}
         setSelectedItem={setSelectedItem}
