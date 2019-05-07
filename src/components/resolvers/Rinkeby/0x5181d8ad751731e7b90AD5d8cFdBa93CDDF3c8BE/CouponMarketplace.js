@@ -13,7 +13,7 @@ const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
 export default function CouponMarketplace({ ein }) {
 
-/*  var itemListings = [
+  var itemListings = [
     {
       uuid: 7329140802,
       quantity: 1,
@@ -41,12 +41,13 @@ export default function CouponMarketplace({ ein }) {
       returnPolicy: 1
     }
   ];
-*/
+ console.log(itemFeatureAddress);
+   console.log(config.ItemFeature.abi)
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
   couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
-  const itemFeatureContract = itemFeatureAddress || itemFeatureAddress !== '' ? useGenericContract(itemFeatureAddress, config.ItemFeature.ABI) : null;
-  const [ itemListings, setItemListings ] = useState(itemFeatureAddress || itemFeatureAddress !== '' ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
+  //const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : undefined;
+//  const [ itemListings, setItemListings ] = useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
   const [ selectedItem, setSelectedItem ] = useState({});
