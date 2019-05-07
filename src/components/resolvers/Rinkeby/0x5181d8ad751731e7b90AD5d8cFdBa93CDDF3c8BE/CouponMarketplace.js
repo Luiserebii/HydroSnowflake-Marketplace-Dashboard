@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
+import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
 import allEnums from './enums';
+import config from './config';
+
 const enums = allEnums.CouponMarketPlaceResolverInterface.e;
 const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
-const address = '0x5181d8ad751731e7b90ad5d8cfdba93cddf3c8be';
 
 export default function CouponMarketplace({ ein }) {
 
