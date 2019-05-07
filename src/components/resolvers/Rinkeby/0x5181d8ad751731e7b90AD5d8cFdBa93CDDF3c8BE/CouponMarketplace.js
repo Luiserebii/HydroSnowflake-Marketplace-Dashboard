@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
 import ItemList from './ItemList';
 import allEnums from './enums';
-const enums = allEnums.CouponMarketPlaceResolverInterface;
+const enums = allEnums.CouponMarketPlaceResolverInterface.e;
+const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
 export default function CouponMarketplace({ ein }) {
 

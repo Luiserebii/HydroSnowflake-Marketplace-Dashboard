@@ -65,4 +65,6 @@ const enums = {
 
 }
 
+console.log(enums.CouponMarketPlaceResolverInterface.e)
+
 module.exports = enums;
