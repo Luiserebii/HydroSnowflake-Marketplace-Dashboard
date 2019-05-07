@@ -13,7 +13,7 @@ const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
 export default function CouponMarketplace({ ein }) {
 
-  var itemListings = [
+/*  var itemListings = [
     {
       uuid: 7329140802,
       quantity: 1,
@@ -41,15 +41,17 @@ export default function CouponMarketplace({ ein }) {
       returnPolicy: 1
     }
   ];
-
-  const [ currentItems, setCurrentItems ] = useState(itemListings);
-  const [ selectedItem, setSelectedItem ] = useState({});
-
+*/
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
   couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
   const [ output, setOutput ] = useState()
   //const itemFeatureContract = useGenericContract(output, config.ItemFeature.ABI)
+  const [ itemListings, setItemListings ] = useState(itemFeatureAddress ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
+
+  const [ currentItems, setCurrentItems ] = useState(itemListings);
+  const [ selectedItem, setSelectedItem ] = useState({});
+
 
 
   return (
@@ -58,7 +60,7 @@ export default function CouponMarketplace({ ein }) {
       <h2>Vendor: {ein}</h2>
       <h3>ItemFeature Address: {itemFeatureAddress ? itemFeatureAddress : null}</h3>
       <ItemList
-        items={currentItems}
+        items={currentItems ? currentItems : "Loading marketplace items..."}
         setSelectedItem={setSelectedItem}
       />
       <Typography component="h3">
@@ -72,15 +74,19 @@ export default function CouponMarketplace({ ein }) {
 }
 
 
-async function getAllItemListings(){
-/*
+function getAllItemListings(ItemFeature){
+
   let itemListings = [];
-  nextID = await instances.ItemFeature.nextItemListingsID.call();
-  for(int i = 0; i < nextID; i++) {
-    itemListings.push(await instances.ItemFeature.itemListings.call(i));
-  }
-  return itemListings;
-*/
+  ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+    for(let i = 0; i < nextID; i++) {
+      ItemFeature.methods['itemListings']().call(i).then(result => {
+        //This logic should crash right...? Every time an itemListing is added, the page will reload and... it'll go in a loop, or......?
+        itemListings.push(result);
+      });
+    return itemListings;
+    }
+  });
+
 }
 
 function calculateNewMeme(num) {
