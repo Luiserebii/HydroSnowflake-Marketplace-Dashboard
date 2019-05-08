@@ -13,7 +13,7 @@ const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
 
 export default function CouponMarketplace({ ein }) {
 
-  var itemListings = [
+  /*var itemListings = [
     {
       uuid: 7329140802,
       quantity: 1,
@@ -40,17 +40,20 @@ export default function CouponMarketplace({ ein }) {
       tags: [],
       returnPolicy: 1
     }
-  ];
- console.log(itemFeatureAddress);
-   console.log(config.ItemFeature.abi)
+  ];*/
+//   console.log(config.ItemFeature.abi)
   const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
   const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
   //Adding conditional to prevent loop
   if(itemFeatureAddress === '' || !itemFeatureAddress) { 
     couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
   } 
- //const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : undefined;
-//  const [ itemListings, setItemListings ] = useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []);
+  console.log("ItemFeatureAddress: " + itemFeatureAddress + typeof itemFeatureAddress);
+  console.log("ABI: " + config.ItemFeature.abi)
+  console.log(typeof config.ItemFeature.abi)
+  const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(/*itemFeatureAddress, config.ItemFeature.abi*/config.CouponMarketplaceResolver.address, ABI) : console.log("HIT UNDEFINED");
+  const [ itemListings, setItemListings ] = useState(itemFeatureContract ? getAllItemListings(itemFeatureContract) : [])
+//useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []); 
 
   const [ currentItems, setCurrentItems ] = useState(itemListings);
   const [ selectedItem, setSelectedItem ] = useState({});
