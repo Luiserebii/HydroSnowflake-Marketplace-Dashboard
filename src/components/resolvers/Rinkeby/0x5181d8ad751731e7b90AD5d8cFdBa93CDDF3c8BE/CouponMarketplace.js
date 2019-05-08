@@ -1,106 +1,82 @@
 
-import React, { useState } from 'react';
-import { Typography, Input, Button } from '@material-ui/core';
+import React, { Component, lazy } from 'react';
+import { Typography, Button } from '@material-ui/core';
 import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
-import allEnums from './enums';
 import { ABI } from './index';
 import config from './config';
 
-const enums = allEnums.CouponMarketPlaceResolverInterface.e;
-const enumToStr = allEnums.CouponMarketPlaceResolverInterface.toString;
+const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+  let promiseArr = []
+  for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
+  return Promise.all(promiseArr) 
+});
 
+const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
-export default function CouponMarketplace({ ein }) {
-
-  /*var itemListings = [
-    {
-      uuid: 7329140802,
-      quantity: 1,
-      itemType: enums.ItemType.DIGITAL,
-      status: enums.ItemStatus.INACTIVE,
-      condition: enums.ItemCondition.GOOD,
-      title: "Test Item",
-      description: "An item you should probably buy",
-      price: 80,
-      delivery: [1,2],
-      tags: [],
-      returnPolicy: 0
-    },
-    {
-      uuid: 7329140802,
-      quantity: 10,
-      itemType: enums.ItemType.DIGITAL,
-      status: enums.ItemStatus.ACTIVE,
-      condition: enums.ItemCondition.NEW,
-      title: "Test IMPROVED Item",
-      description: "An item you should ***DEFINITELY*** buy",
-      price: 100,
-      delivery: [],
-      tags: [],
-      returnPolicy: 1
-    }
-  ];*/
-//   console.log(config.ItemFeature.abi)
-  const couponMarketplaceContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI)
-  const [ itemFeatureAddress, setItemFeatureAddress ] = useState('');
-  //Adding conditional to prevent loop
-  if(itemFeatureAddress === '' || !itemFeatureAddress) { 
-    couponMarketplaceContract.methods['ItemFeatureAddress']().call().then(value => setItemFeatureAddress(value));
-  } 
-  console.log("ItemFeatureAddress: " + itemFeatureAddress + typeof itemFeatureAddress);
-  console.log("ABI: " + config.ItemFeature.abi)
-  console.log(typeof config.ItemFeature.abi)
-  const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : console.log("HIT UNDEFINED");
-  const [ itemListings, setItemListings ] = useState(itemFeatureContract ? getAllItemListings(itemFeatureContract) : [])
-//useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []); 
-
-  const [ currentItems, setCurrentItems ] = useState(itemListings);
-  const [ selectedItem, setSelectedItem ] = useState({});
-
-
-
+const MarketplaceComponent = (props) => {
+  const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem } = props;
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
       <h2>Vendor: {ein}</h2>
-      <h3>ItemFeature Address: {itemFeatureAddress ? itemFeatureAddress : null}</h3>
-      <ItemList
-        items={currentItems ? currentItems : "Loading marketplace items..."}
-        setSelectedItem={setSelectedItem}
-      />
+      <h3>ItemFeature Address: {featureAddress}</h3>
+
+        <ItemList items={itemListings || []} setSelectedItem={onSelectItem} />
+      
       <Typography component="h3">
-        { selectedItem.uuid ? "Selected item for purchase: " + "UUID: " + selectedItem.uuid + " | " + selectedItem.title + " | " + selectedItem.price : ''}
+        { itemToString(selectedItem) || '' }
       </Typography>
+      <Button variant='contained' color='primary' onClick={onLoadItems}>
+        Look Up
+      </Button>
     </div>
-  );
-  
-  
-  
+  )
 }
 
+export class MarketplaceContainer extends Component {
+  state = {
+    couponContract: null,
+    featureAddress: null,
+    featureContract: null,
+    itemListings: null,
+    selectedItem: null,
+  }
 
-function getAllItemListings(ItemFeature){
+  componentDidMount = async () => {
+    const couponContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI);
+    const featureAddress = await couponContract.methods['ItemFeatureAddress']().call();
+    const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
+    const itemListings = await getAllItemListings(featureContract);
+    this.setState({
+      couponContract,
+      featureAddress,
+      featureContract,
+      itemListings
+    })
+  }
 
-  let itemListings = [];
-  ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
-    let promiseArr = []
-    for(let i = 0; i < nextID; i++) {
-        promiseArr.push(ItemFeature.methods['itemListings']().call(i));
-    }
-    Promise.all(promiseArr).then(res => {
-      itemListings = res;
-      return itemListings;
-    });  
+  handleLoadItems = async () => {
+    const itemListings = await getAllItemListings(this.state.featureContract);
+    this.setState({ itemListings })
+  }
 
-  });
+  handleSelectItem = selectedItem => this.setState({ selectedItem })
 
+  render () {
+    const { featureAddress, itemListings, selectedItem } = this.state;
+    const { ein } = this.props;
+    return (
+      <MarketplaceComponent
+        onSelectItem={this.handleSelectItem}
+        onLoadItems={this.handleLoadItems}
+        featureAddress={featureAddress}
+        itemListing={itemListings}
+        selectedItem={selectedItem}
+        ein={ein}
+      />
+    )
+  }
 }
 
-function calculateNewMeme(num) {
-  return num * 2 * calcRandom(10);
-}
-
-function calcRandom(x) {
-  return Math.floor(Math.random() * x);
-} 
+export default ({ ein }) => <MarketplaceContainer ein={ein} />
