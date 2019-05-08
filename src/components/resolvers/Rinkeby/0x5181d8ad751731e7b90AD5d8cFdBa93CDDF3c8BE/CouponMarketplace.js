@@ -51,7 +51,7 @@ export default function CouponMarketplace({ ein }) {
   console.log("ItemFeatureAddress: " + itemFeatureAddress + typeof itemFeatureAddress);
   console.log("ABI: " + config.ItemFeature.abi)
   console.log(typeof config.ItemFeature.abi)
-  const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(/*itemFeatureAddress, config.ItemFeature.abi*/config.CouponMarketplaceResolver.address, ABI) : console.log("HIT UNDEFINED");
+  const itemFeatureContract = (itemFeatureAddress && itemFeatureAddress !== '') ? useGenericContract(itemFeatureAddress, config.ItemFeature.abi) : console.log("HIT UNDEFINED");
   const [ itemListings, setItemListings ] = useState(itemFeatureContract ? getAllItemListings(itemFeatureContract) : [])
 //useState((itemFeatureAddress && itemFeatureAddress !== '') ? getAllItemListings(useGenericContract(itemFeatureAddress, config.ItemFeature.abi)) : []); 
 
