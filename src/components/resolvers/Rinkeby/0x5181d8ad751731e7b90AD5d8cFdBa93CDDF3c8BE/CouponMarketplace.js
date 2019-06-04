@@ -89,7 +89,7 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
     let promiseAllThing = getAllItemListings(featureContract);
     console.log("BEFORE PRINT PROMISEALLTHING")
     console.log(promiseAllThing)
-    promiseAllThing.then(listings => setItemListings(listings));
+    if(promiseAllThing) promiseAllThing.then(listings => setItemListings(listings));
   }
   return <MarketplaceContainer 
     ein={ein}
