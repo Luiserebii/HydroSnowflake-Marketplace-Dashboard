@@ -4,12 +4,16 @@ import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
 import { ABI } from './index';
 import config from './config';
+const util = require('util')
 
-const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
-  let promiseArr = []
-  for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
-  return Promise.all(promiseArr) 
-});
+const getAllItemListings = (ItemFeature) => {
+  console.log("ZOOT", util.inspect(ItemFeature.methods)); 
+  ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+    let promiseArr = []
+    for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
+    return Promise.all(promiseArr) 
+  });
+}
 
 const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
