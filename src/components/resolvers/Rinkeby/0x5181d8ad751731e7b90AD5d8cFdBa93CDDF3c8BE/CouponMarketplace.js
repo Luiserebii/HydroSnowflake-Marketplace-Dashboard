@@ -1,5 +1,4 @@
-
-import React, { Component, lazy } from 'react';
+import React, { Component, lazy, useState } from 'react';
 import { Typography, Button } from '@material-ui/core';
 import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
@@ -36,24 +35,7 @@ const MarketplaceComponent = (props) => {
 
 export class MarketplaceContainer extends Component {
   state = {
-    couponContract: null,
-    featureAddress: null,
-    featureContract: null,
-    itemListings: null,
     selectedItem: null,
-  }
-
-  componentDidMount = async () => {
-    const couponContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI);
-    const featureAddress = await couponContract.methods['ItemFeatureAddress']().call();
-    const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
-    const itemListings = await getAllItemListings(featureContract);
-    this.setState({
-      couponContract,
-      featureAddress,
-      featureContract,
-      itemListings
-    })
   }
 
   handleLoadItems = async () => {
@@ -64,8 +46,8 @@ export class MarketplaceContainer extends Component {
   handleSelectItem = selectedItem => this.setState({ selectedItem })
 
   render () {
-    const { featureAddress, itemListings, selectedItem } = this.state;
-    const { ein } = this.props;
+    const { selectedItem } = this.state;
+    const { ein, featureAddress, itemListings } = this.props;
     return (
       <MarketplaceComponent
         onSelectItem={this.handleSelectItem}
@@ -78,5 +60,29 @@ export class MarketplaceContainer extends Component {
     )
   }
 }
+function MarketplaceCont2({featureAddress, couponContract, ein}) {
+  console.log(featureAddress)
+  const [itemListings, setItemListings] = useState(null);
+  const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
+  console.log(featureContract)
+  if (featureContract && !itemListings) getAllItemListings(featureContract).then(listings => setItemListings(listings));
+  return <MarketplaceContainer 
+    ein={ein}
+    couponContract={couponContract}
+    featureAddress={featureAddress}
+    itemListings={itemListings}
+    featureContract={featureContract}
+  />
+}
 
-export default ({ ein }) => <MarketplaceContainer ein={ein} />
+function MarketplaceCont({ ein }) {
+  const couponContract = useGenericContract(config.CouponMarketplaceResolver.address, ABI);
+  const [featureAddress, setFeatureAddress] = useState(null);
+  if (couponContract && !featureAddress) couponContract.methods['ItemFeatureAddress']()
+    .call().then(address => setFeatureAddress(address))
+  if (!featureAddress || featureAddress == '') return <div>henlo fren</div>
+  return <MarketplaceCont2 ein={ein} featureAddress={featureAddress} couponContract={couponContract} />
+  
+}
+
+export default MarketplaceCont
