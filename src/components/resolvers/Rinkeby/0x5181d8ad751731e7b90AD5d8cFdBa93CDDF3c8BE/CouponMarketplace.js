@@ -10,8 +10,17 @@ const getAllItemListings = (ItemFeature) => {
   console.log("ZOOT");
   console.log(util.inspect(ItemFeature.methods.nextItemListingsID)); 
   ItemFeature.methods['nextItemListingsID']().call().then(nextID => {
+    console.log("FLAG1")
     let promiseArr = []
-    for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
+    console.log("FLAG2")
+    for(let i = 0; i < nextID; i++) {
+      console.log("THIS IS THE NEXTID: " + nextID + "\nI: " + i);
+      console.log("PROMISEARR BEFORE PUSH")
+      console.log(promiseArr)
+      promiseArr.push(ItemFeature.methods['itemListings'](i).call());
+    }
+    console.log("FFFFFFFFLLLLFFFFF");
+    console.log(/*util.inspect(promiseArr)*/promiseArr)
     return Promise.all(promiseArr) 
   });
 }
@@ -76,7 +85,12 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
   const [itemListings, setItemListings] = useState(null);
   const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
   console.log(featureContract)
-  if (featureContract && !itemListings) getAllItemListings(featureContract).then(listings => setItemListings(listings));
+  if (featureContract && !itemListings) { 
+    let promiseAllThing = getAllItemListings(featureContract);
+    console.log("BEFORE PRINT PROMISEALLTHING")
+    console.log(promiseAllThing)
+    promiseAllThing.then(listings => setItemListings(listings));
+  }
   return <MarketplaceContainer 
     ein={ein}
     couponContract={couponContract}
