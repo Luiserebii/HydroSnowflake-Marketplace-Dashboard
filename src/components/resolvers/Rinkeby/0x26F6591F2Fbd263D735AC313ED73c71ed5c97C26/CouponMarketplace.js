@@ -45,6 +45,8 @@ const itemToString = (item) => item && `Selected item for purchase: UUID: ${item
 
 const MarketplaceComponent = (props) => {
   const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem } = props;
+  console.log("DO WE HAVE ITEM LISTINGS???");
+  console.log(itemListings);
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
@@ -103,7 +105,7 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
   if (featureContract && !itemListings) { 
     let promiseAllThing = getAllItemListings(featureContract);
     //console.log(promiseAllThing)
-    if(promiseAllThing) promiseAllThing.then(listings => setItemListings(listings)); //BAND-AID 1: if(promiseAllThing) to prevent undefined
+    if(promiseAllThing) promiseAllThing.then(listings => {console.log("nnn",listings); setItemListings(listings)}); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
   return <MarketplaceContainer 
     ein={ein}
