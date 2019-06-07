@@ -6,9 +6,9 @@ import { ABI } from './index';
 import config from './config';
 const util = require('util')
 
-const getAllItemListings = (ItemFeature) => {
+/*const getAllItemListings = (ItemFeature) => {
   console.log("ZOOT");
-  //console.log(util.inspect(ItemFeature.methods.nextItemListingsID)); 
+  console.log(util.inspect(ItemFeature.methods.nextItemListingsID)); 
   ItemFeature.methods['nextItemListingsID']().call().then(nextID => {
     console.log("FLAG1")
     let promiseArr = []
@@ -20,17 +20,16 @@ const getAllItemListings = (ItemFeature) => {
       promiseArr.push(ItemFeature.methods['itemListings'](i).call());
     }
     console.log("FFFFFFFFLLLLFFFFF");
-    console.log(/*util.inspect(promiseArr)*/promiseArr)
+    console.log(/*util.inspect(promiseArr)promiseArr)
     return Promise.all(promiseArr) 
   });
-  return ItemFeature.methods['']
-}
+}*/
 
-/*const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
   let promiseArr = []
   for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
   return Promise.all(promiseArr) 
-});*/
+});
 
 const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
@@ -84,12 +83,14 @@ export class MarketplaceContainer extends Component {
   }
 }
 function MarketplaceCont2({featureAddress, couponContract, ein}) {
-  console.log(featureAddress)
+  //console.log(featureAddress)
   const [itemListings, setItemListings] = useState(null);
   const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
-  console.log(featureContract)
+  //console.log(featureContract)
   if (featureContract && !itemListings) { 
     let promiseAllThing = getAllItemListings(featureContract);
+    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaa")
+    //console.log(promiseAllThing)
     if(promiseAllThing) promiseAllThing.then(listings => setItemListings(listings)); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
   return <MarketplaceContainer 
