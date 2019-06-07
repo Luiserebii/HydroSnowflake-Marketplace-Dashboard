@@ -24,12 +24,22 @@ const util = require('util')
     return Promise.all(promiseArr) 
   });
 }*/
+/*
+const getAllItemListings = (ItemFeature) => ItemFeature.methods['nextItemListingsID']().call().then(async (nextID) => {
+  let items = []
+  for(let i = 0; i < nextID; i++) {
+    items.push(await ItemFeature.methods['itemListings'](i).call());
+  }
+  return items;
+});*/
 
-const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID'].call().then(nextID => {
+/*const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => { console.log('ass');
   let promiseArr = []
-  for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings']().call(i));
+  for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings'](i).call());
   return Promise.all(promiseArr) 
-});
+});*/
+
+const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
 
 const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
@@ -59,8 +69,11 @@ export class MarketplaceContainer extends Component {
   }
 
   handleLoadItems = async () => {
-    if(this.state.featureContract){ //BAND-AID 2: if(this.state.featureContract) to prevent undefined
-      const itemListings = await getAllItemListings(this.state.featureContract);
+    console.log("MEM1")
+    if(this.props.featureContract){ //BAND-AID 2: if(this.props.featureContract) to prevent undefined
+      console.log("MEM2")
+      const itemListings = await getAllItemListings(this.props.featureContract);
+      console.log(itemListings);
       this.setState({ itemListings })
     }
   }
@@ -89,7 +102,6 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
   //console.log(featureContract)
   if (featureContract && !itemListings) { 
     let promiseAllThing = getAllItemListings(featureContract);
-    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaa")
     //console.log(promiseAllThing)
     if(promiseAllThing) promiseAllThing.then(listings => setItemListings(listings)); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
