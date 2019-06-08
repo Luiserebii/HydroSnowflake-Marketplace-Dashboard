@@ -22,8 +22,8 @@ export default function Item(props) {
         'backgroundColor': color,
         'width': '100%',
         'height': '100%',
-        'border-radius': '15px',
-        'margin-bottom': '25px',
+        'borderRadius': '15px',
+        'marginBottom': '25px',
         'padding': '10px',
         'cursor': 'pointer'
       }}

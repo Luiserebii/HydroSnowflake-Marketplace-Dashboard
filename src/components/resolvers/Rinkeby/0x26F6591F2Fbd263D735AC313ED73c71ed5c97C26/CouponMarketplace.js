@@ -71,9 +71,11 @@ const MarketplaceComponent = (props) => {
         id="coupon-field"
         label="Coupon code (if applicable)"
         onChange={(e) => setCouponID(e.target.value)}
+        style={{"marginBottom": "50px"}}
       /> <br/>
       <Button variant='contained' color='primary' onClick={() => {}}>
         Purchase
+      
       </Button>      
 
     </div>
