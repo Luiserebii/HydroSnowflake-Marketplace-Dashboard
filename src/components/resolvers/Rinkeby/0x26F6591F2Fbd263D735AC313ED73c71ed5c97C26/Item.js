@@ -29,7 +29,7 @@ export default function Item(props) {
       }}
       onMouseOver={() => setColor(hoverColor)}
       onMouseLeave={() => setColor(defaultColor)}
-      onClick={() => props.setSelectedItem({uuid: props.uuid, title: props.title, price: props.price})}
+      onClick={() => props.setSelectedItem({id: props.id, uuid: props.uuid, title: props.title, price: props.price})}
     >
       <Typography variant="h5" component="h5">
         {props.title}
