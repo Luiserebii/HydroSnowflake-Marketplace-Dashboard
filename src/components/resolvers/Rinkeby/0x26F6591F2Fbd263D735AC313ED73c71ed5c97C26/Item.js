@@ -41,6 +41,7 @@ export default function Item(props) {
       </ul>
 
       <ul>
+        <li>ID: {props.id}</li>
         <li>UUID: {props.uuid}</li>
         <li>QTY: {props.quantity}</li>
         <li>Item Type: {enumToStr("ItemType", props.itemType)}</li>

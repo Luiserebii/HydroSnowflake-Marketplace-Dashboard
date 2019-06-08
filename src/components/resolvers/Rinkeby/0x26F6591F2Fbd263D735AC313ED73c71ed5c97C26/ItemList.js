@@ -17,6 +17,7 @@ function generateItems(items, methods) {
 
     return (
       <Item
+        id = {item.id}
         uuid = {item.uuid}
         quantity = {item.quantity}
         itemType = {item.itemType}

@@ -67,3 +67,47 @@ itemListing (??? Check)
 
 
 
+
+
+
+================
+
+
+1. Figure out how to integrate coupon in box (for purchase)
+Material UI:
+
+import TextField from '@material-ui/core/TextField';
+
+<TextField
+  id="coupon-field"
+  label="Coupon code (if applicable)"
+  onChange="handleUpdateCoupon"
+/>
+
+2. Figure out how to integrate purchase process in box, including coupon (button)
+
+handlePurchase=()=>{
+  const buyerAddress = window.ethereum.selectedAddress;
+  couponField = couponID && couponID !== '' ? couponID : 0;
+  couponContract.methods.purchaseItem(selectedItem.id, buyerAddress, couponField).send({from: buyerAddress});
+}
+
+<Button 
+  variant="contained"
+  onClick={handlePurchase()}
+>
+
+
+  Purchase
+<Button/>
+
+
+
+
+Sub-tasks:
+============
+
+-Have id added to item object, then make the selectedItem also take the item object ID
+
+
+

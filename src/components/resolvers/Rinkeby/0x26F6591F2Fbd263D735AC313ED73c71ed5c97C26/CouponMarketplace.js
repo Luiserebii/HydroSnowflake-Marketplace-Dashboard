@@ -24,20 +24,21 @@ const util = require('util')
     return Promise.all(promiseArr) 
   });
 }*/
-/*
+
 const getAllItemListings = (ItemFeature) => ItemFeature.methods['nextItemListingsID']().call().then(async (nextID) => {
   let items = []
-  for(let i = 0; i < nextID; i++) {
+  for(let i = 1; i < nextID; i++) {
     items.push(await ItemFeature.methods['itemListings'](i).call());
+    items[i - 1].id = i;
   }
   return items;
-});*/
-
-const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => { console.log('ass');
+});
+/*
+const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {
   let promiseArr = []
   for(let i = 1; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings'](i).call());
   return Promise.all(promiseArr) 
-});
+});*/
 
 //const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
 
