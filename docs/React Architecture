@@ -1,0 +1,69 @@
+MarketplaceCont
+
+Local var: couponContract
+State: FeatureAddress
+Load in FeatureAddress once
+
+PASS:
+ein, featureAddress, couponContract
+========================
+
+
+MarketplaceCont2
+
+Props:
+ein, featureAddress, couponContract (defined above in local var)
+
+Local var: featureContract
+State: itemListings
+
+If we don't have any items, load them into the state!
+
+PASS:
+ein, couponContract, featureAddress, itemListings, featureContract
+=======================
+
+
+MarketplaceContainer (! Why is this a class?)
+
+Props:
+ein, couponContract, featureAddress, itemListings, featureContract
+
+Define functions: 
+  -handleLoadItems (load our items)
+  -handleSelectItem (take an item, and make it the selected)
+
+
+PASS:
+ein, featureAddress, itemListing(! shouldn't it be itemListings), selectedItem, ein, onLoadItems, onSelectItem 
+========================
+
+
+MarketplaceComponent 
+
+Props:
+ein, featureAddress, itemListings(! WE HAVE TYPO HERE), selectedItem, ein, onLoadItems, onSelectItem
+
+
+PASS:
+itemListings, setSelectedItem
+========================
+
+
+ItemList
+
+Props:
+itemListings, setSelectedItem
+
+
+PASS:
+itemListing (??? Check)
+
+
+
+
+
+
+
+
+

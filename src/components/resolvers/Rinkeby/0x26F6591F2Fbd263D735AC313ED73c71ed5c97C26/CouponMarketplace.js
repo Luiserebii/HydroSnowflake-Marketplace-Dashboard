@@ -33,13 +33,13 @@ const getAllItemListings = (ItemFeature) => ItemFeature.methods['nextItemListing
   return items;
 });*/
 
-/*const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => { console.log('ass');
+const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => { console.log('ass');
   let promiseArr = []
-  for(let i = 0; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings'](i).call());
+  for(let i = 1; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings'](i).call());
   return Promise.all(promiseArr) 
-});*/
+});
 
-const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
+//const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
 
 const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
@@ -98,14 +98,13 @@ export class MarketplaceContainer extends Component {
   }
 }
 function MarketplaceCont2({featureAddress, couponContract, ein}) {
-  //console.log(featureAddress)
+
   const [itemListings, setItemListings] = useState(null);
   const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
-  //console.log(featureContract)
+
   if (featureContract && !itemListings) { 
-    let promiseAllThing = getAllItemListings(featureContract);
-    //console.log(promiseAllThing)
-    if(promiseAllThing) promiseAllThing.then(listings => {console.log("nnn",listings); setItemListings(listings)}); //BAND-AID 1: if(promiseAllThing) to prevent undefined
+    let itemPromise = getAllItemListings(featureContract);
+    if(itemPromise) itemPromise.then(listings => {console.log("nnn", listings); console.log(typeof listings); setItemListings(listings); console.log(itemListings)}); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
   return <MarketplaceContainer 
     ein={ein}
@@ -121,7 +120,7 @@ function MarketplaceCont({ ein }) {
   const [featureAddress, setFeatureAddress] = useState(null);
   if (couponContract && !featureAddress) couponContract.methods['ItemFeatureAddress']()
     .call().then(address => setFeatureAddress(address))
-  if (!featureAddress || featureAddress == '') return <div>henlo fren</div>
+  if (!featureAddress || featureAddress == '') return <div>Loading ItemFeature address...</div>
   return <MarketplaceCont2 ein={ein} featureAddress={featureAddress} couponContract={couponContract} />
   
 }
