@@ -90,7 +90,7 @@ export class MarketplaceContainer extends Component {
         onSelectItem={this.handleSelectItem}
         onLoadItems={this.handleLoadItems}
         featureAddress={featureAddress}
-        itemListing={itemListings}
+        itemListings={itemListings}
         selectedItem={selectedItem}
         ein={ein}
       />
