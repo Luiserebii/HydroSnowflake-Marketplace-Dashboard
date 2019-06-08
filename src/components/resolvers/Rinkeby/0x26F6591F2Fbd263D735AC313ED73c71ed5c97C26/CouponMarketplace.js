@@ -1,5 +1,5 @@
 import React, { Component, lazy, useState } from 'react';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, TextField, Button } from '@material-ui/core';
 import { useGenericContract } from '../../../../common/hooks'
 import ItemList from './ItemList';
 import { ABI } from './index';
@@ -46,6 +46,11 @@ const itemToString = (item) => item && `Selected item for purchase: UUID: ${item
 
 const MarketplaceComponent = (props) => {
   const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem } = props;
+
+  const [couponID, setCouponID] = useState('');
+
+
+  console.log("THE VALUE OF COUPON IDDDD: " + couponID)
   console.log("DO WE HAVE ITEM LISTINGS???");
   console.log(itemListings);
   return (
@@ -59,9 +64,15 @@ const MarketplaceComponent = (props) => {
       <Typography component="h3">
         { itemToString(selectedItem) || '' }
       </Typography>
-      <Button variant='contained' color='primary' onClick={onLoadItems}>
+      <Button color='primary' onClick={onLoadItems}>
         Look Up
       </Button>
+     <TextField
+        id="coupon-field"
+        label="Coupon code (if applicable)"
+        onChange={(e) => setCouponID(e.target.value)}
+      />
+
     </div>
   )
 }
