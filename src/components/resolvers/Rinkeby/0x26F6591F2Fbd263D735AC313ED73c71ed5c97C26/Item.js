@@ -14,6 +14,8 @@ export default function Item(props) {
   console.log("THIS IS ITEM: ");
   console.log(props);
 
+  const ulStyle = { listStyleType: "none" };
+
   return (
     <div
       style = {{
@@ -32,21 +34,21 @@ export default function Item(props) {
       <Typography component="h1">
         {props.title}
       </Typography>
-      <ul>
+      <ul style={ ulStyle }>
         <li>{props.description}</li>
-        <li>Price: {props.price}</li>
-        <li>Delivery Methods: {props.delivery}</li>
-        <li>Return Policy: {props.returnPolicy}</li>
+        <li><b>Price:</b> {props.price}</li>
+        <li><b>Delivery Methods:</b> {props.delivery}</li>
+        <li><b>Return Policy:</b> {props.returnPolicy}</li>
 
       </ul>
 
-      <ul>
-        <li>ID: {props.id}</li>
-        <li>UUID: {props.uuid}</li>
-        <li>QTY: {props.quantity}</li>
-        <li>Item Type: {enumToStr("ItemType", props.itemType)}</li>
-        <li>Item Status: {enumToStr("ItemStatus", props.status)}</li>
-        <li>Item Condition: {enumToStr("ItemCondition", props.condition)}</li>
+      <ul style={ ulStyle }>
+        <li><b>ID:</b> {props.id}</li>
+        <li><b>UUID:</b> {props.uuid}</li>
+        <li><b>QTY:</b> {props.quantity}</li>
+        <li><b>Item Type:</b> {enumToStr("ItemType", props.itemType)}</li>
+        <li><b>Item Status:</b> {enumToStr("ItemStatus", props.status)}</li>
+        <li><b>Item Condition:</b> {enumToStr("ItemCondition", props.condition)}</li>
       </ul>
     </div>
   );

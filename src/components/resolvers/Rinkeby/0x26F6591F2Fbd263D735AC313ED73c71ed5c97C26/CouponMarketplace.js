@@ -66,8 +66,8 @@ const MarketplaceComponent = (props) => {
       </Typography>
       <Button color='primary' onClick={onLoadItems}>
         Look Up
-      </Button>
-     <TextField
+      </Button> <br/>
+      <TextField
         id="coupon-field"
         label="Coupon code (if applicable)"
         onChange={(e) => setCouponID(e.target.value)}
