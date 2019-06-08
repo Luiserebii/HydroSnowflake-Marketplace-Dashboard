@@ -42,7 +42,7 @@ const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsI
 
 //const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
 
-const itemToString = (item) => item && `Selected item for purchase: UUID: ${item.uuid} | ${item.title} | ${item.price}`
+const itemToString = (item) => item && `Selected item for purchase: ID: ${item.id} | UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
 const MarketplaceComponent = (props) => {
   const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem } = props;
@@ -71,7 +71,10 @@ const MarketplaceComponent = (props) => {
         id="coupon-field"
         label="Coupon code (if applicable)"
         onChange={(e) => setCouponID(e.target.value)}
-      />
+      /> <br/>
+      <Button variant='contained' color='primary' onClick={() => {}}>
+        Purchase
+      </Button>      
 
     </div>
   )

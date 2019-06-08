@@ -19,7 +19,7 @@ export default function Item(props) {
   return (
     <div
       style = {{
-        'background-color': color,
+        'backgroundColor': color,
         'width': '100%',
         'height': '100%',
         'border-radius': '15px',
@@ -31,11 +31,11 @@ export default function Item(props) {
       onMouseLeave={() => setColor(defaultColor)}
       onClick={() => props.setSelectedItem({uuid: props.uuid, title: props.title, price: props.price})}
     >
-      <Typography component="h1">
+      <Typography variant="h5" component="h5">
         {props.title}
       </Typography>
       <ul style={ ulStyle }>
-        <li>{props.description}</li>
+        <li><b>Description:</b> {props.description}</li>
         <li><b>Price:</b> {props.price}</li>
         <li><b>Delivery Methods:</b> {props.delivery}</li>
         <li><b>Return Policy:</b> {props.returnPolicy}</li>
