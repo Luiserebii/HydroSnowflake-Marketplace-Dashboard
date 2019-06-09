@@ -45,7 +45,7 @@ const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsI
 const itemToString = (item) => item && `Selected item for purchase: ID: ${item.id} | UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
 const MarketplaceComponent = (props) => {
-  const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem } = props;
+  const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem, couponContract } = props;
 
   const [couponID, setCouponID] = useState('');
 
@@ -53,6 +53,20 @@ const MarketplaceComponent = (props) => {
   console.log("THE VALUE OF COUPON IDDDD: " + couponID)
   console.log("DO WE HAVE ITEM LISTINGS???");
   console.log(itemListings);
+
+  const handlePurchase = () => {
+    console.log("PURCHASE CLICK");
+    if(couponContract && selectedItem) {
+      console.log("WE HABE CC");
+      purchaseItem(window.ethereum.selectedAddress, couponID, couponContract, selectedItem);
+    }
+  }
+
+  const purchaseItem = (_buyerAddress, _couponID, _couponContract, _selectedItem) => {
+    const couponField = _couponID && _couponID !== '' ? _couponID : 0;
+    _couponContract.methods.purchaseItem(_selectedItem.id, _buyerAddress, couponField).send({from: _buyerAddress});
+  }
+
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
@@ -73,9 +87,8 @@ const MarketplaceComponent = (props) => {
         onChange={(e) => setCouponID(e.target.value)}
         style={{"marginBottom": "50px"}}
       /> <br/>
-      <Button variant='contained' color='primary' onClick={() => {}}>
-        Purchase
-      
+      <Button variant='contained' color='primary' onClick={handlePurchase}>
+        Purchase      
       </Button>      
 
     </div>
@@ -101,7 +114,7 @@ export class MarketplaceContainer extends Component {
 
   render () {
     const { selectedItem } = this.state;
-    const { ein, featureAddress, itemListings } = this.props;
+    const { ein, featureAddress, itemListings, couponContract } = this.props;
     return (
       <MarketplaceComponent
         onSelectItem={this.handleSelectItem}
@@ -110,6 +123,7 @@ export class MarketplaceContainer extends Component {
         itemListings={itemListings}
         selectedItem={selectedItem}
         ein={ein}
+        couponContract={couponContract}
       />
     )
   }
