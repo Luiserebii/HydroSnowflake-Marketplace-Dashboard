@@ -45,10 +45,9 @@ const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsI
 const itemToString = (item) => item && `Selected item for purchase: ID: ${item.id} | UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
 const MarketplaceComponent = (props) => {
-  const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem, couponContract } = props;
+  const { ein, featureAddress, itemListings, onLoadItems, onSelectItem, selectedItem, vendorEIN, couponContract } = props;
 
   const [couponID, setCouponID] = useState('');
-
 
   console.log("THE VALUE OF COUPON IDDDD: " + couponID)
   console.log("DO WE HAVE ITEM LISTINGS???");
@@ -70,7 +69,7 @@ const MarketplaceComponent = (props) => {
   return (
     <div>
       <h1>Snowflake Coupon Marketplace</h1>
-      <h2>Vendor: {ein}</h2>
+      <h2>Vendor: {vendorEIN || 'Loading...'}</h2>
       <h3>ItemFeature Address: {featureAddress}</h3>
 
         <ItemList items={itemListings || []} setSelectedItem={onSelectItem} />
@@ -131,12 +130,17 @@ export class MarketplaceContainer extends Component {
 function MarketplaceCont2({featureAddress, couponContract, ein}) {
 
   const [itemListings, setItemListings] = useState(null);
+  const [vendorEIN, setVendorEIN] = useState('');
   const featureContract = useGenericContract(featureAddress, config.ItemFeature.abi);
 
   if (featureContract && !itemListings) { 
     let itemPromise = getAllItemListings(featureContract);
     if(itemPromise) itemPromise.then(listings => {console.log("nnn", listings); console.log(typeof listings); setItemListings(listings); console.log(itemListings)}); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
+  if (couponContract && !vendorEIN || vendorEIN === '') {
+    couponContract.methods.ownerEIN().call().then(vendEIN => {setVendorEIN(vendEIN)});
+  }
+
   return <MarketplaceContainer 
     ein={ein}
     couponContract={couponContract}
