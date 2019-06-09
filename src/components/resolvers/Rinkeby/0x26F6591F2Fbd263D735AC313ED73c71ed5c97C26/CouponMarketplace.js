@@ -113,7 +113,7 @@ export class MarketplaceContainer extends Component {
 
   render () {
     const { selectedItem } = this.state;
-    const { ein, featureAddress, itemListings, couponContract } = this.props;
+    const { ein, featureAddress, itemListings, couponContract, vendorEIN } = this.props;
     return (
       <MarketplaceComponent
         onSelectItem={this.handleSelectItem}
@@ -123,6 +123,7 @@ export class MarketplaceContainer extends Component {
         selectedItem={selectedItem}
         ein={ein}
         couponContract={couponContract}
+        vendorEIN={vendorEIN}
       />
     )
   }
@@ -137,8 +138,8 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
     let itemPromise = getAllItemListings(featureContract);
     if(itemPromise) itemPromise.then(listings => {console.log("nnn", listings); console.log(typeof listings); setItemListings(listings); console.log(itemListings)}); //BAND-AID 1: if(promiseAllThing) to prevent undefined
   }
-  if (couponContract && !vendorEIN || vendorEIN === '') {
-    couponContract.methods.ownerEIN().call().then(vendEIN => {setVendorEIN(vendEIN)});
+  if (couponContract && (!vendorEIN || vendorEIN === '')) {
+    couponContract.methods.ownerEIN().call().then(vendEIN => { setVendorEIN(vendEIN)});
   }
 
   return <MarketplaceContainer 
@@ -147,6 +148,7 @@ function MarketplaceCont2({featureAddress, couponContract, ein}) {
     featureAddress={featureAddress}
     itemListings={itemListings}
     featureContract={featureContract}
+    vendorEIN={vendorEIN}
   />
 }
 
