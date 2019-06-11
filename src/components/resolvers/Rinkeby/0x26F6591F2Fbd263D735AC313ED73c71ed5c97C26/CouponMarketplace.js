@@ -6,25 +6,6 @@ import { ABI } from './index';
 import config from './config';
 const util = require('util')
 
-/*const getAllItemListings = (ItemFeature) => {
-  console.log("ZOOT");
-  console.log(util.inspect(ItemFeature.methods.nextItemListingsID)); 
-  ItemFeature.methods['nextItemListingsID']().call().then(nextID => {
-    console.log("FLAG1")
-    let promiseArr = []
-    console.log("FLAG2")
-    for(let i = 0; i < nextID; i++) {
-      console.log("THIS IS THE NEXTID: " + nextID + "\nI: " + i);
-      console.log("PROMISEARR BEFORE PUSH")
-      console.log(promiseArr)
-      promiseArr.push(ItemFeature.methods['itemListings'](i).call());
-    }
-    console.log("FFFFFFFFLLLLFFFFF");
-    console.log(/*util.inspect(promiseArr)promiseArr)
-    return Promise.all(promiseArr) 
-  });
-}*/
-
 const getAllItemListings = (ItemFeature) => ItemFeature.methods['nextItemListingsID']().call().then(async (nextID) => {
   let items = []
   for(let i = 1; i < nextID; i++) {
@@ -33,14 +14,6 @@ const getAllItemListings = (ItemFeature) => ItemFeature.methods['nextItemListing
   }
   return items;
 });
-/*
-const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {
-  let promiseArr = []
-  for(let i = 1; i < nextID; i++) promiseArr.push(ItemFeature.methods['itemListings'](i).call());
-  return Promise.all(promiseArr) 
-});*/
-
-//const getAllItemListings = ItemFeature => ItemFeature.methods['nextItemListingsID']().call().then(nextID => {console.log("NEXTID: ",nextID); return ItemFeature.methods['itemListings'](1).call()})
 
 const itemToString = (item) => item && `Selected item for purchase: ID: ${item.id} | UUID: ${item.uuid} | ${item.title} | ${item.price}`
 
@@ -49,14 +22,11 @@ const MarketplaceComponent = (props) => {
 
   const [couponID, setCouponID] = useState('');
 
-  console.log("THE VALUE OF COUPON IDDDD: " + couponID)
-  console.log("DO WE HAVE ITEM LISTINGS???");
   console.log(itemListings);
 
   const handlePurchase = () => {
     console.log("PURCHASE CLICK");
     if(couponContract && selectedItem) {
-      console.log("WE HABE CC");
       purchaseItem(window.ethereum.selectedAddress, couponID, couponContract, selectedItem);
     }
   }

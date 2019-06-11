@@ -11,9 +11,6 @@ export default function Item(props) {
   const [ color, setColor ] = useState(defaultColor);
   const hoverColor = '#529bf8';
 
-  console.log("THIS IS ITEM: ");
-  console.log(props);
-
   const ulStyle = { listStyleType: "none" };
 
   return (
